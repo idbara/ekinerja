@@ -88,6 +88,7 @@
                         <li><a href="<?= site_url("kinerja") ?>">Semua Kegiatan</a></li>
                         <li><a href="<?= site_url("kinerja/disetujui") ?>">Kegiatan Disetujui</a></li>
                         <li><a href="<?= site_url("kinerja/ditolak") ?>">Kegiatan Ditolak</a></li>
+                        <li><a href="<?= site_url("kinerja/cetak") ?>">Cetak Laporan</a></li>
                     </ul>
                 </li>
                 <?php } ?>

@@ -65,6 +65,17 @@ class M_Kinerja extends CI_Model {
 		return $this->db->get('kinerja');
 	}
 
+	public function getKinerjaBulanan($userId, $startBulan) {	
+		$lastBulan = date('Y-m-t', strtotime($startBulan));
+		$this->db->join('jenkin', 'jenkin.id = kinerja.jenis', 'left');
+		$this->db->join('users', 'users.id = kinerja.user', 'left');
+		$this->db->where('kinerja.user', $userId);
+		$this->db->where('tanggal >=', $startBulan);
+		$this->db->where('tanggal <=', $lastBulan);
+		$this->db->where('status','Disetujui');
+		return $this->db->get('kinerja');
+	}
+
 	public function countAll($user) {						
 		$sql	= "SELECT count(kinerjaId) as total FROM kinerja WHERE user = ?";
 		$query	= $this->db->query($sql, array($user));

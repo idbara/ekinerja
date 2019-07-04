@@ -9,6 +9,7 @@ class Kinerja extends CI_Controller {
 			redirect("auth");
 		}
 		$this->load->model("M_Kinerja");
+		$this->load->model("M_User");
 	}
 
 	public function index()
@@ -219,6 +220,123 @@ class Kinerja extends CI_Controller {
 			$this->session->set_flashdata('message', 'Gagal');
 			redirect("kinerja");
 		}
+	}
+
+	public function cetak() {
+		$data['title'] = "E-Kinerja -> Input Kegiatan";
+		$data['custom_css'] = '
+			<link rel="stylesheet" type="text/css" href="'.base_url().'assets/js/bootstrap-datepicker/css/datepicker.css" />
+			<link rel="stylesheet" type="text/css" href="'.base_url().'assets/js/select2/select2.css" />';
+		$data['custom_js'] = '
+		<script type="text/javascript" src="'.base_url().'assets/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="'.base_url().'assets/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="'.base_url().'assets/js/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+		<script type="text/javascript" src="'.base_url().'assets/js/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="'.base_url().'assets/js/jquery-multi-select/js/jquery.multi-select.js"></script>
+		<script src="'.base_url().'assets/js/select2/select2.js"></script>
+		<script type="text/javascript">		
+			$(function(){
+			    window.prettyPrint && prettyPrint();
+			    $(".dp1").datepicker({
+			        format: "mm-dd-yyyy",
+			        autoclose: true
+			    });
+
+			});
+			$(document).ready(function() {
+			    $("#e1").select2();
+			    $("#e9").select2();
+			    $("#e2").select2({
+			        placeholder: "Select a State",
+			        allowClear: true
+			    });
+			    $("#e3").select2({
+			        minimumInputLength: 2
+			    });
+			});
+			$(function(){
+				window.prettyPrint && prettyPrint();
+				$(".default-date-picker").datepicker({
+					format: "mm-dd-yyyy"
+				});
+				$(".dpYears").datepicker();
+				$(".dpMonths").datepicker();
+			
+			
+				var startDate = new Date(2012,1,20);
+				var endDate = new Date(2012,1,25);
+				$(".dp4").datepicker()
+					.on("changeDate", function(ev){
+						if (ev.date.valueOf() > endDate.valueOf()){
+							$(".alert").show().find("strong").text("The start date can not be greater then the end date");
+						} else {
+							$(".alert").hide();
+							startDate = new Date(ev.date);
+							$("#startDate").text($(".dp4").data("date"));
+						}
+						$(".dp4").datepicker("hide");
+					});
+				$(".dp5").datepicker()
+					.on("changeDate", function(ev){
+						if (ev.date.valueOf() < startDate.valueOf()){
+							$(".alert").show().find("strong").text("The end date can not be less then the start date");
+						} else {
+							$(".alert").hide();
+							endDate = new Date(ev.date);
+							$(".endDate").text($(".dp5").data("date"));
+						}
+						$(".dp5").datepicker("hide");
+					});
+			
+				// disabling dates
+				var nowTemp = new Date();
+				var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+			
+				var checkin = $(".dpd1").datepicker({
+					onRender: function(date) {
+						return date.valueOf() < now.valueOf() ? "disabled" : "";
+					}
+				}).on("changeDate", function(ev) {
+						if (ev.date.valueOf() > checkout.date.valueOf()) {
+							var newDate = new Date(ev.date)
+							newDate.setDate(newDate.getDate() + 1);
+							checkout.setValue(newDate);
+						}
+						checkin.hide();
+						$(".dpd2")[0].focus();
+					}).data("datepicker");
+				var checkout = $(".dpd2").datepicker({
+					onRender: function(date) {
+						return date.valueOf() <= checkin.date.valueOf() ? "disabled" : "";
+					}
+				}).on("changeDate", function(ev) {
+						checkout.hide();
+					}).data("datepicker");
+			});
+
+		</script>
+			';
+		$data['jenkin'] =$this->M_Kinerja->getJenKin();
+		$this->load->view("layout/header",$data);
+		$this->load->view("kinerja/cetak");
+		$this->load->view("layout/footer");
+	}
+	
+	public function cetakbulanan() {
+		if($this->input->post() == FALSE) redirect("kinerja/cetak");
+		$bulan	= $this->input->post("bulan");
+		$data['bulan'] 	= $bulan;
+		$month = substr($bulan,0,2);
+		$year = substr($bulan,3);
+		$tgl = $year."-".$month."-01";
+		$startBulan = date('Y-m-d', strtotime($tgl));
+		// getKinerja perbulan
+		$data['kinerja'] =$this->M_Kinerja->getKinerjaBulanan($this->session->userdata('id'),$startBulan);
+		// $kinerja =$this->M_Kinerja->getKinerjaBulanan($this->session->userdata('id'),$startBulan);
+		// print_r($kinerja->result());
+		$data['profil']= $this->M_User->getDetail($this->session->userdata('id'));
+
+		$this->load->view("kinerja/print",$data);
 	}
 
 }
