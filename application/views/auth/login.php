@@ -54,7 +54,7 @@
             <button class="btn btn-lg btn-login btn-block" type="submit">Sign in</button>
 
             <div class="registration">
-              Puspindes 2017
+              Puspindes 2019
             </div>
 
         </div>
