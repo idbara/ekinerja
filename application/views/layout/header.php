@@ -76,6 +76,12 @@
                         <span>Penilaian</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= site_url('penilaian/all') ?>">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Lihat Semua Penilaian</span>
+                    </a>
+                </li>
                 <?php } ?>
                 <?php if($this->session->userdata('level') == 'Staff') {?>
                 <li class="sub-menu">

@@ -14,6 +14,11 @@ class M_Kinerja extends CI_Model {
 		$query	= $this->db->query($sql, array($tanggal,$waktu,$jenis,$detail,$keterangan,$id));
 		return $query;
 	}
+	public function nilai($nilai,$id) {
+		$sql 	= "UPDATE kinerja SET nilai = ?,status = 'Disetujui' WHERE kinerjaId = ?";
+		$query	= $this->db->query($sql, array($nilai,$id));
+		return $query;
+	}
 
 	public function delete($id) {
 		$sql 	= "DELETE FROM kinerja WHERE kinerjaId = ?";
@@ -25,6 +30,13 @@ class M_Kinerja extends CI_Model {
 		$this->db->join('jenkin', 'jenkin.id = kinerja.jenis', 'left');
 		$this->db->order_by('tanggal DESC');
 		$this->db->where('user', $id);
+		return $this->db->get('kinerja');
+	}
+
+	public function getAllKinerja() {
+		$this->db->join('jenkin', 'jenkin.id = kinerja.jenis', 'left');
+		$this->db->join('users', 'users.id = kinerja.user', 'left');
+		$this->db->order_by('tanggal DESC');
 		return $this->db->get('kinerja');
 	}
 
@@ -49,6 +61,12 @@ class M_Kinerja extends CI_Model {
 	public function getDetail($id,$user) {				
 		$sql	= "SELECT * FROM kinerja WHERE kinerjaId = ? AND user = ?";
 		$query	= $this->db->query($sql, array($id,$user));
+		return $query->row();
+	}
+
+	public function getDetailById($id) {				
+		$sql	= "SELECT kinerja.*,users.name FROM `kinerja` JOIN  users ON users.id = kinerja.user WHERE kinerja.kinerjaId = ?";
+		$query	= $this->db->query($sql, array($id));
 		return $query->row();
 	}
 

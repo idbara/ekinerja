@@ -136,7 +136,7 @@ class Kinerja extends CI_Controller {
 	}
 
 	public function edit($id) {		
-		$data['kinerja']= $this->M_Kinerja->getDetail($id,$this->session->userdata('id'));
+		$data['kinerja']= $this->M_Kinerja->getDetailById($id); 
 		$data['title'] 	= "E-Kinerja -> Edit Kegiatan";
 		$data['jenkin'] =$this->M_Kinerja->getJenKin();
 

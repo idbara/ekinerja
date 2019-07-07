@@ -33,7 +33,8 @@
                         <th>Detail</th>
                         <th>Keterangan</th>
                         <th>Status</th>
-                        <th colspan="2">Action</th>
+                        <th>Point</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,16 +51,16 @@
                                 echo '<td>'.$row->waktu.' Menit </td>';  
                                 echo '<td>'.$row->detail.'</td>';  
                                 echo '<td>'.$row->keterangan.'</td>';
-                                echo '<td><span class="label label-warning">Pending</span></td>';
-                                echo '<td>  <a href="'.site_url("penilaian/nilai/$row->kinerjaId").'" type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Setujui</a>
-                                            </td>
-                                            <td>
-                                            <form action="'.site_url("penilaian/ubahStatus").'" method="post">
-                                                <input type="hidden" name="idKinerja" value="'.$row->kinerjaId.'">
-                                                <input type="hidden" name="status" value="Ditolak">
-                                                <button type="submit" class="btn btn-danger btn-xs">Tolak</button>
-                                            </form>
-                                        </td>';
+                                if($row->status == 'pending'){
+                                    echo '<td><span class="label label-warning">Pending</span></td>';
+                                } else if($row->status == 'Disetujui'){
+                                    echo '<td><span class="label label-success">Disetujui</span></td>';
+                                } else {
+                                    echo '<td><span class="label label-danger">Ditolak</span></td>';
+                                }
+                                echo '<td>'.$row->nilai.'</td>';
+                                echo '<td>  <a href="'.site_url("penilaian/nilai/$row->kinerjaId").'" type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                            </td>';
                                 echo '</tr>';
                             }
                         ?>

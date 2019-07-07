@@ -94,7 +94,7 @@
                                 }
                                 ?>   
                                 <tr>
-                                    <td colspan="6"></td>
+                                    <td colspan="6" class="text-right">Total Point</td>
                                     <th class="text-center"><?php echo $totalPoint; ?></th>
                                 </tr> 
                            

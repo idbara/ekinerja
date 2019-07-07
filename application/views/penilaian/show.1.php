@@ -51,7 +51,11 @@
                                 echo '<td>'.$row->detail.'</td>';  
                                 echo '<td>'.$row->keterangan.'</td>';
                                 echo '<td><span class="label label-warning">Pending</span></td>';
-                                echo '<td>  <a href="'.site_url("penilaian/nilai/$row->kinerjaId").'" type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Setujui</a>
+                                echo '<td>  <form action="'.site_url("penilaian/ubahStatus").'" method="post">
+                                                <input type="hidden" name="idKinerja" value="'.$row->kinerjaId.'">
+                                                <input type="hidden" name="status" value="Disetujui">
+                                                <button type="submit" class="btn btn-primary btn-xs">Setuju</button>
+                                            </form>
                                             </td>
                                             <td>
                                             <form action="'.site_url("penilaian/ubahStatus").'" method="post">

@@ -15,7 +15,7 @@
                                 }
                             ?>
 
-                            <input type="hidden" name="id" value="<?php echo $kinerja->kinerjaId; ?>"">                            
+                            <input type="hidden" name="id" value="<?php echo $kinerja->kinerjaId; ?>">                            
                             <div class="form-group">
                                 <label class="col-lg-2 col-sm-2 control-label">Tanggal Kegiatan</label>
                                 <div class="col-lg-10">
@@ -37,7 +37,11 @@
                                         <?php
                                             foreach ($jenkin->result() as $row)
                                             {
-                                                echo '<option value="'.$row->id.'">'.$row->kegiatan.'</option>';
+                                                if($kinerja->jenis == $row->id){
+                                                    echo '<option value="'.$row->id.'" selected>'.$row->kegiatan.'</option>';
+                                                } else {
+                                                    echo '<option value="'.$row->id.'">'.$row->kegiatan.'</option>';
+                                                }
                                             }
                                         ?>
                                     </select>
